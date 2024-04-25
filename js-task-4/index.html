@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hamza Mohammed Hassanain</title>
+  </head>
+
+  <style>
+    body {
+      background-color: #f4f4f4;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      width: 300px;
+      margin: 0 auto;
+    }
+
+    label {
+      margin-bottom: 5px;
+    }
+
+    input {
+      padding: 5px;
+
+      margin-bottom: 10px;
+    }
+
+    .error {
+      color: red;
+      margin-bottom: 10px;
+    }
+
+    table {
+      margin: 20px auto;
+    }
+
+    th,
+    td {
+      padding: 10px;
+    }
+
+    th {
+      background-color: #f4f4f4;
+    }
+  </style>
+  <body>
+    <form>
+      <label for="name">Name:</label>
+      <input type="text" name="name" id="name" />
+      <p class="error" id="name-error"></p>
+      <br />
+      <label for="age">Age:</label>
+      <input type="number" name="age" id="age" />
+      <p class="error" id="age-error"></p>
+      <br />
+      <label for="email">Email:</label>
+      <input type="email" name="email" id="email" />
+      <p class="email" id="age-error"></p>
+      <br />
+      <input type="submit" value="Add" />
+      <input type="reset" value="Reset" />
+    </form>
+
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Age</th>
+          <th>Email</th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+
+    <script>
+      const form = document.querySelector("form");
+      const tableBody = document.querySelector("#table-body");
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const name = document.querySelector("#name").value;
+        const age = document.querySelector("#age").value;
+        const email = document.querySelector("#email").value;
+
+        let isValid = validateForm(name, age, email);
+        if (!isValid) {
+          return;
+        }
+        const tr = document.createElement("tr");
+        const tdName = document.createElement("td");
+        const tdAge = document.createElement("td");
+        const tdEmail = document.createElement("td");
+
+        tdName.textContent = name;
+        tdAge.textContent = age;
+        tdEmail.textContent = email;
+
+        tr.appendChild(tdName);
+        tr.appendChild(tdAge);
+        tr.appendChild(tdEmail);
+
+        tableBody.appendChild(tr);
+      });
+
+      function validateForm(name, age, email) {
+        let isValid = true;
+
+        if (name.length < 3) {
+          if (document.querySelector("#name-error"))
+            document.querySelector("#name-error").innerHTML =
+              "Name must be at least 3 characters";
+          isValid = false;
+        } else {
+          if (document.querySelector("#name-error"))
+            document.querySelector("#name-error").innerHTML = "";
+        }
+
+        if (age < 1 || age > 100) {
+          if (document.querySelector("#age-error"))
+            document.querySelector("#age-error").innerHTML =
+              "Age must be between 1 and 100";
+          isValid = false;
+        } else {
+          if (document.querySelector("#age-error"))
+            document.querySelector("#age-error").innerHTML = "";
+        }
+
+        const validEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        if (!validEmailRegex.test(email)) {
+          if (document.querySelector("#email-error"))
+            document.querySelector("#email-error").innerHTML = "Invalid email";
+
+          isValid = false;
+        } else {
+          if (document.querySelector("#email-error"))
+            document.querySelector("#email-error").innerHTML = "";
+        }
+
+        return isValid;
+      }
+    </script>
+  </body>
+</html>
